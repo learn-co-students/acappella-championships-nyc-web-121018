@@ -1,9 +1,11 @@
 
 const url = 'http://localhost:3000/a_cappella_groups'           // single URL for DRY purposes
 let allGroups = []                                              // local variable set after first fetch
+let sorted                                                      // sorted will hold sorted allGroups array for sort
 
 document.addEventListener("DOMContentLoaded", function(event) {
   const tableBody = document.getElementById('table-body')       // target HTML 'table-body'
+  const tableHeader = document.querySelector('.blue')
   const winner = document.getElementById('winner')              // target HTML H2 'winner' id
 
   // fetch request to GET all A Cappella groups
@@ -44,7 +46,45 @@ document.addEventListener("DOMContentLoaded", function(event) {
       // fetch request to DELETE from DB
       deleteACapppellaGroup(url, e.target.dataset.id)
     }
+  })
 
+  tableHeader.addEventListener('click', e => {
+    // if a user clicks on a table header the table will be sorted by that column
+    switch(e.target.innerText) {
+      // sort by college column
+      case "College":
+        winner.innerText = `Table sorted by: College (column)`
+        changeCssStyle()
+        sorted = sortByNestedColumn("college", "name")
+        tableBody.innerHTML = createTableHTML(sorted)
+        break;
+      // sort by group name column
+      case "Group Name":
+        winner.innerText = `Table sorted by: Group Name (column)`
+        changeCssStyle()
+        sorted = sortByColumn("name")
+        tableBody.innerHTML = createTableHTML(sorted)
+        break;
+      // sort by membership column
+      case "Membership":
+        winner.innerText = `Table sorted by: Membership (column)`
+        changeCssStyle()
+        sorted = sortByColumn("membership")
+        tableBody.innerHTML = createTableHTML(sorted)
+        break;
+      //sort by division column
+      case "Division":
+        winner.innerText = `Table sorted by: Division (column)`
+        changeCssStyle()
+        sorted = sortByNestedColumn("college", "division")
+        tableBody.innerHTML = createTableHTML(sorted)
+        break;
+      // let user know they cannot sort by last two columns
+      default:
+        winner.innerText = `Table cannot be sorted by 'Crown' or 'Remove'`
+        winner.style.backgroundColor = "red"
+        winner.style.color = "white"
+    }
   })
 
 }) // end DOMContentLoaded
@@ -86,4 +126,35 @@ function createTableHTML(groups) {             // create HTML for all groups by 
 
 function findGroup(id) {                      // helper function to find group based on id of selected item
   return allGroups.find( group => { return group.id === parseInt(id)})
+}
+
+function sortByColumn(column) {              // Sort helper based on dealing with non-nested data structure items
+  return allGroups.sort(function(a,b) {
+    let sortA = a[column].toLowerCase()
+    let sortB = b[column].toLowerCase()
+      if (sortA < sortB) {
+        return -1
+      } else if (sortA > sortB){
+        return 1
+      }
+        return 0
+  })
+}
+
+function sortByNestedColumn(college, column) {  // Sort helper based on dealing with nested data structure items
+  return allGroups.sort(function(a,b) {
+    let sortA = a[college][column].toLowerCase()
+    let sortB = b[college][column].toLowerCase()
+      if (sortA < sortB) {
+        return -1
+      } else if (sortA > sortB){
+        return 1
+      }
+        return 0
+  })
+}
+
+function changeCssStyle() {       // helper to change CSS on DOM to alert user to changes 
+  winner.style.backgroundColor = "blue"
+  winner.style.color = "white"
 }
