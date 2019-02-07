@@ -11,6 +11,10 @@ h1, h2 {
   margin-bottom: 0px;
 }
 
+td{
+  text-align: center;
+}
+
 th {
   font-weight: bold;
 }
