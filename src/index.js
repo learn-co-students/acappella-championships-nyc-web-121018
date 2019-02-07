@@ -16,7 +16,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     // if the item clicked on has a src (aka image) proceed...
     if (e.target.src) {
-
+      // winner CSS may need to be reset if columns have been reformatted
+      crownCss()
       // if H2 text is longer than the original 'Winner:' than use this code
       if (winner.innerText.length > 8) {
         // find the new group clicked on
@@ -53,35 +54,35 @@ document.addEventListener("DOMContentLoaded", function(event) {
     switch(e.target.innerText) {
       // sort by college column
       case "College":
-        winner.innerText = `Table sorted by: College (column)`
+        winner.innerText = "Table sorted by: College (column)"
         changeCssStyle()
         sorted = sortByNestedColumn("college", "name")
         tableBody.innerHTML = createTableHTML(sorted)
         break;
       // sort by group name column
       case "Group Name":
-        winner.innerText = `Table sorted by: Group Name (column)`
+        winner.innerText = "Table sorted by: Group Name (column)"
         changeCssStyle()
         sorted = sortByColumn("name")
         tableBody.innerHTML = createTableHTML(sorted)
         break;
       // sort by membership column
       case "Membership":
-        winner.innerText = `Table sorted by: Membership (column)`
+        winner.innerText = "Table sorted by: Membership (column)"
         changeCssStyle()
         sorted = sortByColumn("membership")
         tableBody.innerHTML = createTableHTML(sorted)
         break;
       //sort by division column
       case "Division":
-        winner.innerText = `Table sorted by: Division (column)`
+        winner.innerText = "Table sorted by: Division (column)"
         changeCssStyle()
         sorted = sortByNestedColumn("college", "division")
         tableBody.innerHTML = createTableHTML(sorted)
         break;
       // let user know they cannot sort by last two columns
       default:
-        winner.innerText = `Table cannot be sorted by 'Crown' or 'Remove'`
+        winner.innerText = "Table cannot be sorted by 'Crown' or 'Remove'"
         winner.style.backgroundColor = "red"
         winner.style.color = "white"
     }
@@ -93,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
 function  getACapppellaGroups(url) {             // function to fetch all a cappella groups and render to DOM
-  const tableBody = document.getElementById('table-body')
+  const tableBody = document.getElementById("table-body")
   fetch(url)
     .then(response => response.json())
     .then(groups => {
@@ -132,12 +133,13 @@ function sortByColumn(column) {              // Sort helper based on dealing wit
   return allGroups.sort(function(a,b) {
     let sortA = a[column].toLowerCase()
     let sortB = b[column].toLowerCase()
-      if (sortA < sortB) {
-        return -1
-      } else if (sortA > sortB){
-        return 1
-      }
-        return 0
+
+    if (sortA < sortB) {
+      return -1
+    } else if (sortA > sortB){
+      return 1
+    }
+      return 0
   })
 }
 
@@ -145,16 +147,21 @@ function sortByNestedColumn(college, column) {  // Sort helper based on dealing 
   return allGroups.sort(function(a,b) {
     let sortA = a[college][column].toLowerCase()
     let sortB = b[college][column].toLowerCase()
-      if (sortA < sortB) {
-        return -1
-      } else if (sortA > sortB){
-        return 1
-      }
-        return 0
+
+    if (sortA < sortB) {
+      return -1
+    } else if (sortA > sortB){
+      return 1
+    }
+      return 0
   })
 }
 
 function changeCssStyle() {       // helper to change CSS on DOM to alert user to changes
   winner.style.backgroundColor = "blue"
   winner.style.color = "white"
+}
+
+function crownCss() {
+  winner.style.backgroundColor = "#FFD700"
 }
