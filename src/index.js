@@ -103,7 +103,7 @@ function  getACapppellaGroups(url) {             // function to fetch all a capp
 }
 
 function  deleteACapppellaGroup(url, id) {       // function to delete an a cappella group from local variable and DB
-  fetch(url + `/${id}`, {
+  fetch(`${url}/${id}`, {
     method: "DELETE"
   })
 }
@@ -154,7 +154,7 @@ function sortByNestedColumn(college, column) {  // Sort helper based on dealing 
   })
 }
 
-function changeCssStyle() {       // helper to change CSS on DOM to alert user to changes 
+function changeCssStyle() {       // helper to change CSS on DOM to alert user to changes
   winner.style.backgroundColor = "blue"
   winner.style.color = "white"
 }

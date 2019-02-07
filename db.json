@@ -189,16 +189,6 @@
         "state": "MA",
         "division": "East"
       }
-    },
-    {
-      "id": 20,
-      "name": "Chorallaries",
-      "membership": "mixed",
-      "college": {
-        "name": "Massachusetts Institute of Technology",
-        "state": "MA",
-        "division": "East"
-      }
     }
   ]
 }
